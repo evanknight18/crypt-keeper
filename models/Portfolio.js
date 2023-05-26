@@ -30,7 +30,7 @@ Portfolio.init(
         user_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            references: User.id
+            // references: User.id
         }
     },
     {
@@ -38,7 +38,7 @@ Portfolio.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'product',
+        modelName: 'portfolio',
     }
 );
 

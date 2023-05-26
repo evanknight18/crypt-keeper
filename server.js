@@ -4,9 +4,13 @@ const session = require('express-session');
 const sequelize = require('./config/connection'); // Sequelize database connection
 const routes = require('./controllers'); // Import API routes
 const exphbs = require('express-handlebars'); // Import Handlebars
+const helpers = require('./utils/helpers'); //import utils/helpers functions
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+app.use(express.static(path.join(__dirname, '/public'))); // Serve static files from the 'public' directory
 
 // Set up sessions with Sequelize
 const sess = {
@@ -18,16 +22,17 @@ const sess = {
 
 app.use(session(sess));
 
+const hbs = exphbs.create({ helpers });
+
 // Set up Handlebars.js engine
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // Middleware for parsing JSON and urlencoded form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); // Serve static files from the 'public' directory
 
-// Add routes, both API and view
+// Add routes, both API and home
 app.use(routes);
 
 // Start server after DB connection

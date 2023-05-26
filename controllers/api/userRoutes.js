@@ -1,10 +1,11 @@
 const router = require('express').Router();
-const { User } = require('../../models');
+const User = require('../../models/User');
 const withAuth = require('../../utils/auth');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
+
 
 // POST /api/users/signup
-router.post('/signup', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const userData = await User.create(req.body);
         req.session.save(() => {
@@ -52,6 +53,8 @@ router.post('/login', async (req, res) => {
                 .status(200)
                 .json({ user: userData, message: 'You are now logged in!' });
         });
+
+        res.render('homepage');
 
     } catch (err) {
         res.status(500).json(err);
