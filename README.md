@@ -18,7 +18,7 @@ Crypt Keeper is an intuitive, full-stack web application designed to simplify cr
 
 ## Installation
 
-node.js, Express.js, Handlebars.js, MySQL, Sequelize ORM
+node.js, Express.js, Handlebars.js, MySQL, Sequelize ORM, Chart.js
 
 ## Usage
 
