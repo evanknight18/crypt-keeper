@@ -1,0 +1,12 @@
+[
+    {
+      "symbol": "BTC",
+      "amount": 1.5,
+      "user_id": 1
+    },
+    {
+      "symbol": "ETH",
+      "amount": 3,
+      "user_id": 2
+    }
+  ]
