@@ -8,6 +8,6 @@ const cryptoRoutes = require('./cryptoRoutes');
 // Set up routes
 router.use('/users', userRoutes);
 router.use('/portfolio', portfolioRoutes);
-router.use('/crypto', cryptoRoutes);
+// router.use('/crypto', cryptoRoutes);
 
 module.exports = router;
