@@ -24,8 +24,8 @@ router.post('/', async (req, res) => {
             password: req.body.password
         });
         req.session.save(() => {
-            req.session.userId = userData.id;
-            req.session.loggedIn = true;
+            req.session.user_id = userData.id;
+            req.session.logged_in = true;
             res.status(200).json(userData);
         });
     } catch (err) {
@@ -61,13 +61,11 @@ router.post('/login', async (req, res) => {
 
         // If the email and password are valid, create a new session
         req.session.save(() => {
-            req.session.userId = userData.id;
-            req.session.loggedIn = true;
+            req.session.user_id = userData.id;
+            req.session.logged_in = true;
 
             res.status(200).json({ user: userData, message: 'You are now logged in!' });
         });
-
-        res.render('homepage');
 
     } catch (err) {
         res.status(500).json(err);
@@ -76,7 +74,7 @@ router.post('/login', async (req, res) => {
 
 // Logout
 router.post('/logout', (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.logged_in) {
         req.session.destroy(() => {
             res.status(204).end();
         });

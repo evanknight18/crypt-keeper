@@ -1,15 +1,36 @@
 const router = require('express').Router();
-const User = require('../models/User');
+const {User, Portfolio} = require('../models');
 
 router.get('/', async (req, res) => {
-    res.render('homepage');
+  try {
+
+    const portfolioData = await Portfolio.findAll({
+      where: { user_id: req.session.user_id },
+        include: [
+        {
+          model: User,
+          attributes: ['user_name'],
+        },
+      ],
+    });
+
+    const portfolio = portfolioData.map((portfolio) => portfolio.get({ plain: true }));
+    console.log(portfolio);
+
+    res.render('homepage', {
+      portfolio,
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // GET route for login page
 router.get('/login', (req, res) => {
-    if (req.session.loggedIn) {
-      res.redirect('/');
-      return;
+    if (req.session.logged_in) {
+        res.redirect('/');
+        return;
     }
     res.render('login');
 });
