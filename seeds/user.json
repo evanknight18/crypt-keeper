@@ -1,13 +1,13 @@
-[
-    {
-      "user_name": "testuser1",
-      "email": "test1@example.com",
-      "password": "password123"
-    },
+[   
     {
       "user_name": "bigcat",
       "email": "holyroller86@hotmail.com",
       "password": "hbskater"
+    },
+    {
+      "user_name": "testuser1",
+      "email": "test1@example.com",
+      "password": "password123"
     }
 ]
   

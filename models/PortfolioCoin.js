@@ -1,31 +1,25 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
-
-const User = require('./User');
+const Portfolio = require('./Portfolio');
 const Coin = require('./Coin');
 
-class Portfolio extends Model {}
+class PortfolioCoin extends Model {}
 
-Portfolio.init(
+PortfolioCoin.init(
     {
         id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             primaryKey: true,
+            allowNull: false,
             autoIncrement: true
         },
-        portfolio_name: {
-            type: DataTypes.STRING,
-            allowNull: true
+        coin_id: {
+           type: DataTypes.STRING,
+           references: Coin.id
         },
-        value: {
-            type: DataTypes.DECIMAL,
-            allowNull: false
-        },
-        user_id: {
+        portfolio_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            references: User.id
+            references: Portfolio.id
         }
     },
     {
@@ -33,8 +27,8 @@ Portfolio.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'portfolio',
+        modelName: 'portfolio_coin',
     }
 );
 
-module.exports = Portfolio;
+module.exports = PortfolioCoin;

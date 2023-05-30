@@ -1,25 +1,25 @@
 const axios = require('axios');
 const router = require('express').Router();
-const { Portfolio } = require('../../models');
+const { Portfolio, User, Coin } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 // Get user's portfolio with real-time prices
-router.get('/', withAuth, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const portfolioData = await Portfolio.findAll({
       where: {
-        user_id: req.session.user_id,
+        user_id: req.params.id,
       },
+      include: [{ model: User }, { model: Coin }]
     });
 
-    const portfolio = portfolioData.map((coin) => coin.get({ plain: true }));
+    // const portfolio = portfolioData.map((coin) => coin.get({ plain: true }));
 
-    for (let coin of portfolio) {
-      const response = await axios.get(`INSERT API URL`);
-      coin.price = response.data[coin.name].usd;
-    }
-
-    res.json(portfolio);
+    // for (let coin of portfolio) {
+    //   const response = await axios.get('INSERT API URL');
+    //   coin.price = response.data[coin.name].usd;
+    // }
+    res.status(200).json(portfolioData);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -29,11 +29,10 @@ router.get('/', withAuth, async (req, res) => {
 router.post('/', withAuth, async (req, res) => {
   try {
     // Fetch the real-time price of the coin from the CoinGecko API
-    const response = await axios.get(`INSERT API URL`);
+    const response = await axios.get('INSERT API URL');
     const price = response.data[req.body.name].usd;
 
-    const newCoin = await Portfolio.create({
-      ...req.body,
+    const newCoin = await Portfolio.create(req.body, {
       user_id: req.session.user_id,
       price: price,
     });

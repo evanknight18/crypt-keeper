@@ -1,13 +1,15 @@
 [
     {
-      "symbol": "BTC",
-      "amount": 1.5,
-      "user_id": 1
+      "coin_name": "bitcoin" ,
+      "price": 27000.00
     },
     {
-      "symbol": "ETH",
-      "amount": 3,
-      "user_id": 2
+      "coin_name": "ethereum" ,
+      "price": 1800.00
+    },
+    {
+      "coin_name": "solana" ,
+      "price": 20.00
     }
   ]
   

@@ -12,12 +12,17 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.static(path.join(__dirname, '/public'))); // Serve static files from the 'public' directory
 
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
 // Set up sessions with Sequelize
 const sess = {
     secret: process.env.SESS_SECRET,
     cookie: {},
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new SequelizeStore({
+      db: sequelize
+    })
   };
 
 app.use(session(sess));

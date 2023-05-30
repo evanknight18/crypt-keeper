@@ -1,12 +1,12 @@
 [
     {
-      "symbol": "BTC",
-      "amount": 1.5,
+      "portfolio_name": "cat capital",
+      "value": 10000.00,
       "user_id": 1
     },
     {
-      "symbol": "ETH",
-      "amount": 3,
+      "portfolio_name": "test port",
+      "value": 10000.00,
       "user_id": 2
     }
   ]

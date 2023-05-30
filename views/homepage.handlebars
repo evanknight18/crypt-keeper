@@ -1,10 +1,15 @@
-<div class="container text-center">
+<div class="container-fluid">
   <div class="row align-items-start">
-    <div class="col-4 bg-warning" style="--bs-bg-opacity: .5;">
-      MARKET DASHBOARD
+    <div class="col-4 bg-warning text-start" style="--bs-bg-opacity: .5;">
+      <h2>MARKET DASHBOARD</h2>
     </div>
-    <div class="col-8 ">
-      {{username}}'s PORTFOLIO
+    <div class="col-8 text-center">
+      <h2>PORTFOLIO</h2>
+        <div style="width: 500px">
+            <canvas id="chart"></canvas>
+        </div> 
     </div>
   </div>
 </div>
+
+<script>src="/js/main.js"</script>

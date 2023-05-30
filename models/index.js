@@ -1,22 +1,23 @@
-// const Coin = require('./Coin');
-// const Portfolio = require('./Portfolio');
-// const User = require('./User');
+const Coin = require('./Coin');
+const Portfolio = require('./Portfolio');
+const User = require('./User');
+const PortfolioCoin = require('./PortfolioCoin');
 
-// User.hasOne(Portfolio, {
-//     foreignKey: 'user_id'
-// });
+Portfolio.belongsTo(User, {
+    foreignKey: 'user_id'
+});
 
-// Portfolio.belongsTo(User, {
-//     foreignKey: 'user_id'
-// });
+User.hasMany(Portfolio, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE'
+});
 
-// Portfolio.hasMany(Coin, {
-//     foreignKey: 'coin_id',
-//     onDelete: 'CASCADE'
-// });
+Coin.belongsToMany(Portfolio, {
+    through: PortfolioCoin
+});
 
-// Coin.belongsTo(Portfolio, {
-//     foreignKey: 'id'
-// });
+Portfolio.belongsToMany(Coin, {
+    through: PortfolioCoin
+});
 
-// module.exports = { Coin, Portfolio, User};
+module.exports = { Coin, Portfolio, User, PortfolioCoin};
