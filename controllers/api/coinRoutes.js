@@ -16,41 +16,6 @@ router.get('/price/:id', withAuth, async (req, res) => {
   }
 });
 
-// Buy a coin
-router.post('/buy', withAuth, async (req, res) => {
-  try {
-    const newCoin = await Coin.create({
-      user_id: req.session.user_id,
-      coin_id: req.body.coin_id,
-      quantity: req.body.quantity,
-    });
-
-    res.status(200).json(newCoin);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
-
-// Sell a coin
-router.post('/sell', withAuth, async (req, res) => {
-  try {
-    const coinData = await Coin.destroy({
-      where: {
-        user_id: req.session.user_id,
-        coin_id: req.body.coin_id,
-      },
-    });
-
-    if (!coinData) {
-      res.status(404).json({ message: 'No coin found with this id owned by the user' });
-      return;
-    }
-
-    res.status(200).json(coinData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 
 module.exports = router;
