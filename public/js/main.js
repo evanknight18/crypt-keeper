@@ -10,5 +10,3 @@ let portfolioChart = new Chart(ctx, {
     }]
 }
 });
-
-console.log('fuck');

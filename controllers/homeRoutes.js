@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {User, Portfolio} = require('../models');
+const {User, Portfolio, Coin} = require('../models');
 
 router.get('/', async (req, res) => {
   try {
@@ -7,10 +7,8 @@ router.get('/', async (req, res) => {
     const portfolioData = await Portfolio.findAll({
       where: { user_id: req.session.user_id },
         include: [
-        {
-          model: User,
-          attributes: ['user_name'],
-        },
+        { model: User, attributes: ['user_name'] },
+        { model: Coin }
       ],
     });
 
@@ -18,7 +16,7 @@ router.get('/', async (req, res) => {
     console.log(portfolio);
 
     res.render('homepage', {
-      portfolio,
+      ...portfolio[0],
       logged_in: req.session.logged_in
     });
   } catch (err) {
@@ -28,10 +26,10 @@ router.get('/', async (req, res) => {
 
 // GET route for login page
 router.get('/login', (req, res) => {
-    if (req.session.logged_in) {
-        res.redirect('/');
-        return;
-    }
+    // if (req.session.logged_in) {
+    //     res.redirect('/');
+    //     return;
+    // }
     res.render('login');
 });
 
