@@ -1,5 +1,6 @@
 // Import necessary packages
 const express = require('express');
+// const axios = require('axios');
 const session = require('express-session');
 const sequelize = require('./config/connection'); // Sequelize database connection
 const routes = require('./controllers'); // Import API routes
@@ -39,6 +40,18 @@ app.use(express.urlencoded({ extended: true }));
 
 // Add routes, both API and home
 app.use(routes);
+
+// Test route for CoinGecko API
+// app.get('/api/test', async (req, res) => {
+//   try {
+//     const response = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+//     console.log('CoinGecko API Response:', response.data);
+//     res.status(200).json({ message: 'CoinGecko API test successful.' });
+//   } catch (err) {
+//     console.error('Error:', err);
+//     res.status(500).json({ error: 'CoinGecko API test failed.' });
+//   }
+// });
 
 // Start server after DB connection
 sequelize.sync({ force: false }).then(() => {
