@@ -2,8 +2,9 @@ const axios = require('axios');
 const router = require('express').Router();
 const { Portfolio, User, Coin } = require('../../models');
 const withAuth = require('../../utils/auth');
+const { where } = require('sequelize');
 
-// Get user's portfolio with real-time prices
+// Get user's portfolio with associted coins
 router.get('/:id', async (req, res) => {
   try {
     const portfolioData = await Portfolio.findAll({
@@ -19,20 +20,23 @@ router.get('/:id', async (req, res) => {
 });
 
 // Add a coin to user's portfolio
-router.post('/', withAuth, async (req, res) => {
+router.post('/:id', async (req, res) => {
   try {
-    // Fetch the real-time price of the coin from the CoinGecko API
-    const response = await axios.get('INSERT API URL');
-    const price = response.data[req.body.name].usd;
-
-    const newCoin = await Portfolio.create(req.body, {
-      user_id: req.session.user_id,
-      price: price,
+    const portfolio = await Portfolio.findAll({
+      where: { user_id: req.params.id },
+      include: [{ model: User }, { model: Coin }]
     });
-
-    res.status(200).json(newCoin);
+    const newCoin = { coin_name: req.body.coin_name, price: req.body.price };
+    let exists = portfolio[0].coins.filter(coin => coin.coin_name === newCoin.coin_name);
+    if (exists === newCoin) {
+      res.json({message: `Coin already added ${newCoin.coin_name}` });
+    } else {
+      console.log(`trying to add coin ${newCoin.coin_name + newCoin.price}` );
+      await portfolio[0].createCoin(newCoin);
+      res.status(200).json({message: `Coin ${newCoin.coin_name} added successfully!` });
+    }
   } catch (err) {
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
 });
 
