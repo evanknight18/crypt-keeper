@@ -12,13 +12,6 @@ router.get('/:id', async (req, res) => {
       },
       include: [{ model: User }, { model: Coin }]
     });
-
-    // const portfolio = portfolioData.map((coin) => coin.get({ plain: true }));
-
-    // for (let coin of portfolio) {
-    //   const response = await axios.get('INSERT API URL');
-    //   coin.price = response.data[coin.name].usd;
-    // }
     res.status(200).json(portfolioData);
   } catch (err) {
     res.status(500).json(err);
