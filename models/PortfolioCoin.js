@@ -13,8 +13,12 @@ PortfolioCoin.init(
             allowNull: false,
             autoIncrement: true
         },
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
         coin_id: {
-           type: DataTypes.STRING,
+           type: DataTypes.INTEGER,
            references: Coin.id
         },
         portfolio_id: {
