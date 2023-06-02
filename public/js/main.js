@@ -10,7 +10,6 @@ let portfolioChart = new Chart(ctx, {
         }]
     }
 });
-<<<<<<< HEAD
 
 console.log('fuck yeah sucka');
 
@@ -59,5 +58,3 @@ function handleRefreshClick() {
 buyButton.addEventListener('click', handleBuyClick);
 sellButton.addEventListener('click', handleSellClick);
 refreshButton.addEventListener('click', handleRefreshClick);
-=======
->>>>>>> 03a014e990fa9ddc9275fd687eb87a61a3880ac2
