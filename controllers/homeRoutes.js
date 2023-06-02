@@ -11,20 +11,20 @@ const openai = new OpenAIApi(configuration);
 
 router.get('/', async (req, res) => {
   try {
-    
-    let coins = ['bitcoin', 'ethereum'];
-    const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: `My cryptocurrency portfolio holds ${coins}. As of the year 2023, give me predictions for the coins in my portfolio and recent news for each coin. Finally, suggest one cryptocurrency that is worth researching more about.`,
-        temperature: 1.2,
-        max_tokens: 2048,
-        // top_p: 1.0,
-        n: 1,
-        frequency_penalty: 0.0,
-        presence_penalty: 0.0,
-        stop: ["\"\"\""],
-      });
-      const resGPT = response.data.choices[0].text;
+    // GPT is very slow, but works - comment out for speed
+    // let coins = ['bitcoin', 'ethereum'];
+    // const response = await openai.createCompletion({
+    //     model: "text-davinci-003",
+    //     prompt: `My cryptocurrency portfolio holds ${coins}. As of the year 2023, give me predictions for the coins in my portfolio and recent news for each coin. Finally, suggest one cryptocurrency that is worth researching more about.`,
+    //     temperature: 1.2,
+    //     max_tokens: 2048,
+    //     // top_p: 1.0,
+    //     n: 1,
+    //     frequency_penalty: 0.0,
+    //     presence_penalty: 0.0,
+    //     stop: ["\"\"\""],
+    //   });
+    //   const resGPT = response.data.choices[0].text;
 
     const portfolioData = await Portfolio.findAll({
       where: { user_id: req.session.user_id },
@@ -33,12 +33,19 @@ router.get('/', async (req, res) => {
         { model: Coin }
       ],
     });
-
+    
     const portfolio = portfolioData.map((portfolio) => portfolio.get({ plain: true }));
-    console.log(portfolio);
+    let portCoins = [];
+    portfolio[0].coins.forEach(coin => portCoins.push(coin.coin_name));
 
-    res.render('homepage', {
-      ...portfolio[0], resGPT,
+    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${portCoins.join('%2C')}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true`)
+    const data = await response.json();
+    const dataArr = Object.entries(data)
+    const coinArr = dataArr.map(coin => String(coin[0]))
+    console.log();
+
+    res.render('dashboard', {
+      ...portfolio[0], coinArr, dataArr, //resGPT,
       logged_in: req.session.logged_in
     });
   } catch (err) {
@@ -54,23 +61,5 @@ router.get('/login', (req, res) => {
     // }
     res.render('login');
 });
-
-// async function getGPT(...coins){
-//   const response = await openai.createCompletion({
-//   model: "text-davinci-003",
-//   prompt: `My cryptocurrency portfolio holds ${coins}. As of the year 2023, give me predictions for the coins in my portfolio and recent news for each coin. Finally, suggest one cryptocurrency that is worth researching more about.`,
-//   temperature: 1.2,
-//   max_tokens: 2048,
-//   // top_p: 1.0,
-//   n: 1,
-//   frequency_penalty: 0.0,
-//   presence_penalty: 0.0,
-//   stop: ["\"\"\""],
-// });
-// // const data = await response.json();
-// let resGPT = response.data.choices[0].text;
-// console.log(resGPT);
-// return resGPT;
-// }
 
 module.exports = router;

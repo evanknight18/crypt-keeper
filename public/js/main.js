@@ -1,16 +1,3 @@
-const ctx = document.getElementById('chart');
-
-let portfolioChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['bitcoin', 'ethereum', 'solana'],
-        datasets: [{
-            label: 'Value USD:',
-            data: [27000, 1800 * 10, 20 * 500],
-        }]
-    }
-});
-
 console.log('fuck yeah sucka');
 
 // Fetch API functions
@@ -24,11 +11,12 @@ async function handleApiCall(url) {
     }
 }
 
+
 // Buy button
 async function handleBuyClick() {
     const coinId = 'bitcoin'; // Replace this with the actual coin ID
     const quantity = 1; // Replace this with the actual quantity
-    const response = await fetch('/api/portfolio/buy', {
+    const response = await fetch('/api/portfolio/:id/coin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -55,12 +43,30 @@ async function handleRefreshClick() {
     console.log(data);
 }
 
+// logout (needs work)
+const handleLogout = async (event) => {
+    event.preventDefault();
+   
+    console.log('clicky click')
+    const response = await fetch('/api/user/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+    })
+    if (response.ok) {
+        document.location.replace('/login');
+      } else {
+        alert(response.statusText);
+      }
+}
+
 // Define buttons
 const buyButton = document.querySelector('.btn-success');
 const sellButton = document.querySelector('.btn-danger');
-const refreshButton = document.querySelector('.btn-info');
-
+// const refreshButton = document.querySelector('.btn-info');
+const logoutButton = document.getElementById('logout');
 // Add event listeners to the buttons
 buyButton.addEventListener('click', handleBuyClick);
 sellButton.addEventListener('click', handleSellClick);
-refreshButton.addEventListener('click', handleRefreshClick);
+// refreshButton.addEventListener('click', handleRefreshClick);
+logoutButton.addEventListener('click', handleLogout);
+

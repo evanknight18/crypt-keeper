@@ -57,15 +57,15 @@ router.post('/login', async (req, res) => {
                 .status(400)
                 .json({ message: 'Incorrect email or password, please try again' });
             return;
-        }
-
-        // If the email and password are valid, create a new session
-        req.session.save(() => {
+        } else {
+            req.session.save(() => {
             req.session.user_id = userData.id;
             req.session.logged_in = true;
 
             res.status(200).json({ user: userData, message: 'You are now logged in!' });
-        });
+            })
+        }
+        // If the email and password are valid, create a new session
 
     } catch (err) {
         res.status(500).json(err);

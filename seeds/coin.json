@@ -10,6 +10,34 @@
     {
       "coin_name": "solana" ,
       "price": 20.00
+    },
+    {
+      "coin_name": "ripple" ,
+      "price": 0.50
+    },
+    {
+      "coin_name": "cardano" ,
+      "price": 0.40
+    },
+    {
+      "coin_name": "dogecoin" ,
+      "price": 0.07
+    },
+    {
+      "coin_name": "polygon" ,
+      "price": 1.00
+    },
+    {
+      "coin_name": "tron" ,
+      "price": 0.08
+    },
+    {
+      "coin_name": "polkadot" ,
+      "price": 5.00
+    },
+    {
+      "coin_name": "avalanche" ,
+      "price": 14.00
     }
   ]
   

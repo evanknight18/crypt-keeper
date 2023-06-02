@@ -1,0 +1,106 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Crypt Keeper</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <button type="button" class="btn btn-outline-success" id="logout">Logout</button>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid text-center" style="height: 100vh">
+  <div class="row">
+    <div class="col d-flex flex-column align-items-center">
+      <div class="well">
+        <h4><a href="#" style="text-transform:uppercase;">{{user.user_name}} Profile</a></h4>
+        <img src="" class="img-circle" height="65" width="65" alt="Avatar">
+      </div>
+      <div class="well m-2" style="width:400px; height:400px;">
+        <canvas id="chart" style="width:400px; height:400px;"></canvas>
+      </div>
+      <div class="well">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Buy
+            </button>
+            <ul class="dropdown-menu">
+                {{#each coins as |coin|}}
+                <li><a class="dropdown-item" id="{{coin.coin_name}}-buy" href="#">{{coin.coin_name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Sell
+            </button>
+            <ul class="dropdown-menu">
+                {{#each coins as |coin|}}
+                <li><a class="dropdown-item" id="{{coin.coin_name}}-sell" href="#">{{coin.coin_name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+        <button type="button" class="btn btn-light m-2">Refresh</button>
+      </div>
+    </div>
+    <div class="col-6">
+       <div class="container-fluid text-center">
+            <h4>Market Dashboard</h4>
+       </div> 
+       <div class="d-grid gap-4">
+            <button class="btn btn-light" type="button">COIN  |  PRICE  |  MKT CAP  |  24 VOL</button>
+            {{#each coins as |coin|}}
+            <button class="btn btn-secondary" type="button">{{coin.coin_name}}  | $ {{coin.price}}  |  {{#each dataArr}} {{usd}} {{/each}}  | {{#each dataArr}} {{usd}} {{/each}}</button>
+            {{/each}}
+        </div>
+    </div>
+    <div class="col d-flex justify-content-center">
+      <div class="col-sm-2 well">
+      {{!-- Render chart --}}
+      <div class="well m-2">
+        <h4>Chart</h4>
+      </div>      
+      {{!-- Render GPT off-canvas --}}
+      <div class="well m-2">
+      <div class="d-grid gap-2"> 
+        <button class="btn btn-light btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">portfolioGPT</button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-header">
+                     <h3 class="offcanvas-title" id="offcanvasRightLabel">portfolioGPT says:</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p>
+                    {{resGPT}}
+                </p>
+            </div>
+           </div>  
+        </div>
+        </div>   
+      </div>
+    </div>
+<script>
+    const ctx = document.getElementById('chart');
+
+    let portfolioChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+        labels: [{{#each coinArr}} `{{this}}`, {{/each}}],
+            datasets: [{
+                label: 'Value USD:',
+                data: [27000, 1800 * 10, 20 * 500],
+            }]
+        }
+    });
+
+</script>
+<script src="/js/main.js"></script>
