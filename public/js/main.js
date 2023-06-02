@@ -13,46 +13,39 @@ let portfolioChart = new Chart(ctx, {
 
 console.log('fuck yeah sucka');
 
-// Get the buttons by their ids
-const buyButton = document.getElementById('buyButton');
-const sellButton = document.getElementById('sellButton');
-const refreshButton = document.getElementById('refreshButton');
+// Fetch API functions
+async function handleApiCall(url) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 // Buy button
-function handleBuyClick() {
-    fetch('/api/portfolio/buy')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+async function handleBuyClick() {
+    const data = await handleApiCall('/api/portfolio/buy');
+    console.log(data);
 }
 
 // Sell button
-function handleSellClick() {
-    fetch('/api/portfolio/sell')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+async function handleSellClick() {
+    const data = await handleApiCall('/api/portfolio/sell');
+    console.log(data);
 }
 
 // Refresh button
-function handleRefreshClick() {
-    fetch('/api/portfolio/refresh')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+async function handleRefreshClick() {
+    const data = await handleApiCall('/api/portfolio/refresh');
+    console.log(data);
 }
+
+// Define buttons
+const buyButton = document.querySelector('.btn-success');
+const sellButton = document.querySelector('.btn-danger');
+const refreshButton = document.querySelector('.btn-info');
 
 // Add event listeners to the buttons
 buyButton.addEventListener('click', handleBuyClick);
