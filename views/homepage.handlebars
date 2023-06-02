@@ -88,16 +88,28 @@
     </div>
     <div class="col-sm-2 well">
       {{!-- Render chart --}}
-      <div class="well">
+      <div class="well m-2">
         <p>Chart</p>
       </div>      
-      {{!-- Render news --}}
-      <div class="well">
-        <p>News</p>
-      </div>
-      {{!-- Render other --}}
-      <div class="well">
-        <p>Other</p>
+      {{!-- Render GPT off-canvas --}}
+      <div class="well m-2">
+      <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">portfolioGPT</button>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                 <h5 class="offcanvas-title" id="offcanvasRightLabel">portfolioGPT says:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p>
+                    {{resGPT}}
+                </p>
+            </div>
+        </div>
+        </div>
+        <div class="well m-2">
+            <p>Other</p>
+        </div>    
       </div>
     </div>
   </div>
@@ -106,6 +118,6 @@
 <footer class="container-fluid text-center">
   <p>Footer Text</p>
 </footer>
-<script src="/public/js/main.js"></script>
+<script src="/js/main.js"></script>
 </body>
 
