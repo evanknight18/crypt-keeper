@@ -1,8 +1,12 @@
+console.log('fuck');
+
 const loginFormHandler = async (event) => {
     event.preventDefault();
 
     const emailLogin = document.getElementById('email-login').value.trim();
     const passwordLogin = document.getElementById('password-login').value.trim();
+    
+    console.log(emailLogin + ' ' + passwordLogin)
 
     if (emailLogin && passwordLogin) {
       const response = await fetch('/api/users/login', {
@@ -16,6 +20,7 @@ const loginFormHandler = async (event) => {
 
       if (response.ok) {
         document.location.replace('/');
+        console.log('its okay')
       } else {
         alert('Failed to log in.');
       }

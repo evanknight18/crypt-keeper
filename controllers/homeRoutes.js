@@ -12,19 +12,19 @@ const openai = new OpenAIApi(configuration);
 router.get('/', async (req, res) => {
   try {
     // GPT is very slow, but works - comment out for speed
-    // let coins = ['bitcoin', 'ethereum'];
-    // const response = await openai.createCompletion({
-    //     model: "text-davinci-003",
-    //     prompt: `My cryptocurrency portfolio holds ${coins}. As of the year 2023, give me predictions for the coins in my portfolio and recent news for each coin. Finally, suggest one cryptocurrency that is worth researching more about.`,
-    //     temperature: 1.2,
-    //     max_tokens: 2048,
-    //     // top_p: 1.0,
-    //     n: 1,
-    //     frequency_penalty: 0.0,
-    //     presence_penalty: 0.0,
-    //     stop: ["\"\"\""],
-    //   });
-    //   const resGPT = response.data.choices[0].text;
+    let coins = ['bitcoin', 'ethereum'];
+    const gpt = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: `My cryptocurrency portfolio holds ${coins}. As of the year 2023, give me predictions for the coins in my portfolio and recent news for each coin. Finally, suggest one cryptocurrency that is worth researching more about. Please format your response in neat html, using <h3> for the headers of each section, breaks after each section, and with no html head.`,
+        temperature: 1.2,
+        max_tokens: 2048,
+        // top_p: 1.0,
+        n: 1,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
+        stop: ["\"\"\""],
+    });
+    const resGPT = gpt.data.choices[0].text;
 
     const portfolioData = await Portfolio.findAll({
       where: { user_id: req.session.user_id },
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
     console.log();
 
     res.render('dashboard', {
-      ...portfolio[0], coinArr, dataArr, //resGPT,
+      ...portfolio[0], coinArr, dataArr, resGPT,
       logged_in: req.session.logged_in
     });
   } catch (err) {
@@ -59,7 +59,7 @@ router.get('/login', (req, res) => {
     //     res.redirect('/');
     //     return;
     // }
-    res.render('login');
+    res.render('landing');
 });
 
 module.exports = router;

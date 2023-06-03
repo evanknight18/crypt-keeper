@@ -1,0 +1,76 @@
+    
+    
+    <ul class="nav justify-content-end">
+        <li class="nav-item m-3">
+          <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#myInput" id="wallet"><i class="bi bi-wallet mx-2"></i>Connect Wallet</button>
+        </li>
+    </ul>
+
+     <div class="modal fade" id="myInput" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-warning">
+              <button type="button" class="btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-warning">
+              <div class="cointainer d-flex align-items-center justify-content-center text-dark" style="height: 20vh">
+                <h3>you are poor.</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="container-fluid align-items-center" style="height: 100vh">
+      <div class="row ">
+        <div class="col d-flex flex-column justify-content-start" id="hero" style="height:100vh">                    
+          <h1 id="header" >Crypt Keeper</h1> 
+          <h4 id="text">Visualize and track your crypto with:</h4>
+          <h4 id="text"><i class="bi bi-speedometer2"></i> Portfolio Dashboard</h4>
+          <h4 id="text"><i class="bi bi-graph-up"></i> Performance Charting</h4>
+          <h4 id="text"><i class="bi bi-android2"></i> AI Coaching</h4>
+        </div>
+
+        <div class="col-4">
+          <h4 class="mt-5 mb-3">Log In</h4>
+          <form>
+            <div class="mb-3">
+              <label for="email-login" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="email-login" aria-describedby="emailHelp" style="width:400px;">
+            </div>
+            <div class="mb-3">
+              <label for="password-login" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password-login" style="width:400px;">
+            </div>
+            <button type="submit" class="btn btn-warning" id="submit-login">Submit</button>
+          </form>
+
+          <h4 class="mt-5 mb-3">Sign Up</h4>
+          <form>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="email" class="form-control" id="username" aria-describedby="emailHelp" style="width:400px;">
+              </div>
+            <div class="mb-3">
+              <label for="email-signup" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="email-signup" aria-describedby="emailHelp" style="width:400px;">
+            </div>
+            <div class="mb-3">
+              <label for="password-signup" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password-signup" style="width:400px;">
+            </div>
+            <button type="submit" class="btn btn-warning" id="submit-signup">Submit</button>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+    <script>
+        const myModal = document.getElementById('wallet')
+        const myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', () => {
+        myInput.focus()
+        });
+    </script>
+    <script src="/js/login.js"></script>
