@@ -64,4 +64,30 @@ router.delete('/:id/coin', async (req, res) => {
   }
 });
 
+// Sell a coin from user's portfolio
+router.post('/:id/sell', async (req, res) => {
+  try {
+    const { coinId, quantity } = req.body;
+    const portfolio = await Portfolio.findOne({ where: { user_id: req.params.id } });
+    if (!portfolio) {
+      return res.status(404).json({ error: 'Portfolio not found' });
+    }
+    const coinIndex = portfolio.coins.findIndex(c => c.coinId === coinId);
+    if (coinIndex === -1) {
+      return res.status(404).json({ error: 'Coin not found in portfolio' });
+    }
+    if (portfolio.coins[coinIndex].quantity < quantity) {
+      return res.status(400).json({ error: 'Not enough coins to sell' });
+    }
+    portfolio.coins[coinIndex].quantity -= quantity;
+    if (portfolio.coins[coinIndex].quantity === 0) {
+      portfolio.coins.splice(coinIndex, 1);
+    }
+    await portfolio.save();
+    res.json(portfolio);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
