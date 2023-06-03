@@ -48,7 +48,7 @@ const handleLogout = async (event) => {
     event.preventDefault();
    
     console.log('clicky click')
-    const response = await fetch('/api/user/logout', {
+    const response = await fetch('/api/users/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     })
