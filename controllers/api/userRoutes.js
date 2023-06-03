@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { User, Coin, Portfolio, PortfolioCoin } = require('../../models');
 
 // Pull user data
-router.get('/', async (req, res) => {
+router.get('/', withAuth, async (req, res) => {
     try {
         const userData = await User.findAll({
             include: [{ model: Portfolio }]
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create new user
-router.post('/', async (req, res) => {
+router.post('/', withAuth, async (req, res) => {
     try {
         const userData = await User.create({
             user_name: req.body.user_name,

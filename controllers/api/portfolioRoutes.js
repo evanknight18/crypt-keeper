@@ -5,7 +5,7 @@ const withAuth = require('../../utils/auth');
 const { where } = require('sequelize');
 
 // Get user's portfolio with associted coins
-router.get('/:id', async (req, res) => {
+router.get('/:id', withAuth, async (req, res) => {
   try {
     const portfolioData = await Portfolio.findAll({
       where: { user_id: req.params.id },
@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Add a coin to user's portfolio
-router.post('/:id/coin', async (req, res) => {
+router.post('/:id/coin', withAuth, async (req, res) => {
   try {
     const portfolio = await Portfolio.findAll({
       where: { user_id: req.params.id },
@@ -41,7 +41,7 @@ router.post('/:id/coin', async (req, res) => {
 });
 
 // Delete a coin from user's portfolio
-router.delete('/:id/coin', async (req, res) => {
+router.delete('/:id/coin', withAuth, async (req, res) => {
   try {
     const portfolio = await Portfolio.findAll({
       where: { user_id: req.params.id },
@@ -65,7 +65,7 @@ router.delete('/:id/coin', async (req, res) => {
 });
 
 // Sell a coin from user's portfolio
-router.post('/:id/sell', async (req, res) => {
+router.post('/:id/sell', withAuth, async (req, res) => {
   try {
     const { coinId, quantity } = req.body;
     const portfolio = await Portfolio.findOne({ where: { user_id: req.params.id } });
