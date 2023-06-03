@@ -33,14 +33,32 @@ async function handleBuyClick() {
 
 // Sell button
 async function handleSellClick() {
-    const data = await handleApiCall('/api/portfolio/sell');
-    console.log(data);
+    const coinId = 'bitcoin'; // Replace this with the actual coin ID
+    const quantity = 1; // Replace this with the actual quantity
+    const response = await fetch('/api/portfolio/sell', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ coinId, quantity }),
+    });
+    if (response.ok) {
+        const updatedPortfolio = await response.json();
+        updatePortfolio(updatedPortfolio);
+    } else {
+        console.error('Failed to sell coin');
+    }
 }
 
 // Refresh button
 async function handleRefreshClick() {
-    const data = await handleApiCall('/api/portfolio/refresh');
-    console.log(data);
+    const response = await fetch('/api/portfolio/refresh');
+    if (response.ok) {
+        const updatedPortfolio = await response.json();
+        updatePortfolio(updatedPortfolio);
+    } else {
+        console.error('Failed to refresh portfolio');
+    }
 }
 
 // logout (needs work)
