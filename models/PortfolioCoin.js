@@ -19,11 +19,17 @@ PortfolioCoin.init(
         },
         coin_id: {
            type: DataTypes.INTEGER,
-           references: Coin.id
+           references: {
+               model: 'coin',
+               key: 'id'
+           }
         },
         portfolio_id: {
             type: DataTypes.INTEGER,
-            references: Portfolio.id
+            references: {
+                model: 'portfolio',
+                key: 'id'
+            }
         }
     },
     {
