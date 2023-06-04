@@ -1,106 +1,137 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Crypt Keeper</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <button type="button" class="btn btn-outline-success" id="logout">Logout</button>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" style="font-size: 50px; font-family: Rubik Wet Paint; color: gold">Crypt Keeper</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button type="button" class="btn btn-outline-warning">Logout</button>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<div class="container-fluid text-center" style="height: 100vh">
-  <div class="row">
-    <div class="col d-flex flex-column align-items-center">
-      <div class="well">
-        <h4><a href="#" style="text-transform:uppercase;">{{user.user_name}} Profile</a></h4>
-        <img src="" class="img-circle" height="65" width="65" alt="Avatar">
-      </div>
-      <div class="well m-2" style="width:400px; height:400px;">
-        <canvas id="chart" style="width:400px; height:400px;"></canvas>
-      </div>
-      <div class="well">
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Buy
-            </button>
-            <ul class="dropdown-menu">
-                {{#each coins as |coin|}}
-                <li><a class="dropdown-item" id="{{coin.coin_name}}-buy" href="#">{{coin.coin_name}}</a></li>
-                {{/each}}
-            </ul>
+  <main>
+
+  <div class="container-fluid text-center">
+  <div class="row align-items-start">
+
+    <div class="col-3">
+        <h3 class="mb-5 mt-3">[NAME] Portfolio</h3>
+        <div class="mb-5 mx-4" style="height: 400px; width: 400px;">
+          <canvas id="chart" style="height: 400px; width: 400px;"></canvas>
         </div>
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Sell
+        <div class="d-grid gap-3 mt-5">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success dropdown-toggle" style="opacity: 0.8" data-bs-toggle="dropdown" aria-expanded="false">
+              Buy
             </button>
-            <ul class="dropdown-menu">
-                {{#each coins as |coin|}}
-                <li><a class="dropdown-item" id="{{coin.coin_name}}-sell" href="#">{{coin.coin_name}}</a></li>
-                {{/each}}
+
+            <ul class="dropdown-menu" id="buy-drop "style="width: 300px;">
+                <div class="input-group mb-3">
+                  <button class="btn btn-outline-success" type="button">Buy</button>
+                  <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                  <option selected>Pick a coin...</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+              <div class="input-group mb-3" style="width: 150px;">
+                <span class="input-group-text" id="inputGroup-sizing-default">Qty</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+              </div>
             </ul>
-        </div>
-        <button type="button" class="btn btn-light m-2">Refresh</button>
-      </div>
+            </div>
+
+           <div class="btn-group" role="group">
+            <button type="button" class="btn btn-danger dropdown-toggle" style="opacity: 0.8" data-bs-toggle="dropdown" aria-expanded="false">
+              Sell
+            </button>
+            <ul class="dropdown-menu" style="width: 300px;">
+              <div class="input-group mb-3">
+                  <button class="btn btn-outline-danger" type="button">Sell</button>
+                  <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                  <option selected>Pick a coin...</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>            
+            </ul>
+          </div>
+            <button class="btn btn-light" type="button" style="opacity: 0.6;"><i class="bi bi-arrow-repeat mx-2"></i>Refresh</button>
+          </div>
     </div>
+
     <div class="col-6">
-       <div class="container-fluid text-center">
-            <h4>Market Dashboard</h4>
-       </div> 
-       <div class="d-grid gap-4">
-            <button class="btn btn-light" type="button">COIN  |  PRICE  |  MKT CAP  |  24 VOL</button>
-            {{#each coins as |coin|}}
-            <button class="btn btn-secondary" type="button">{{coin.coin_name}}  | $ {{coin.price}}  |  {{#each dataArr}} {{usd}} {{/each}}  | {{#each dataArr}} {{usd}} {{/each}}</button>
-            {{/each}}
-        </div>
+      <h3 class="mb-5 mt-3">Market Dashboard</h3>
+      <ul class="list-group list-group-horizontal justify-content-center mb-3">
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">COIN</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">SYMBOL</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">PRICE</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">MARKET CAP</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">24H VOL</li>
+      </ul>
+      {{#each dataArr as |coin|}}
+      <ul class="list-group list-group-horizontal-sm justify-content-center mb-3">
+        <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
+        <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
+        <li class="list-group-item flex-fill" style="width: 200px;">${{coin.[1].usd}}</li>
+        <li class="list-group-item flex-fill" style="width: 200px;">${{large-number coin.[1].usd_market_cap}}</li>
+        <li class="list-group-item flex-fill" style="width: 200px;">${{large-number coin.[1].usd_24h_vol}}</li>
+      </ul>
+      {{/each}}
     </div>
-    <div class="col d-flex justify-content-center">
-      <div class="col-sm-2 well">
-      {{!-- Render chart --}}
-      <div class="well m-2">
-        <h4>Chart</h4>
-      </div>      
-      {{!-- Render GPT off-canvas --}}
-      <div class="well m-2">
-      <div class="d-grid gap-2"> 
-        <button class="btn btn-light btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">portfolioGPT</button>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                     <h1 class="offcanvas-title" id="offcanvasRightLabel">portfolioGPT says:</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <div>
-                    {{{resGPT}}}
-                </div>
-            </div>
-           </div>  
-        </div>
-        </div>   
+
+    <div class="col-3">
+      <h3 class="mb-5 mt-3 mb-5">Performance</h3>
+      <div style="height: 400px; width: 400px;">
+        <img src="/images/linechart.png" style="height: 400px; width: 400px; opacity: 0.7">
       </div>
+      <div class="d-grid gap-2 mt-5">
+         <button class="btn btn-light btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="opacity: 0.6" type="button">portfolioGPT</button>
+      </div>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+        <h1 class="offcanvas-title" id="offcanvasRightLabel">portfolioGPT say:</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+        <div class="offcanvas-body">
+        ...
+        </div>
     </div>
+      
+    </div>
+
+  </div>
+  </div>
+
+  </main>
+
+
 <script>
     const ctx = document.getElementById('chart');
+    Chart.defaults.global.defaultFontColor = "#fff"
 
     let portfolioChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-        labels: [{{#each coinArr}} `{{this}}`, {{/each}}],
+        labels: ['bitcoin', 'ethereum', 'solana', 'dogecoin'],
             datasets: [{
                 label: 'Value USD:',
-                data: [27000, 1800 * 10, 20 * 500],
+                data: [27000, 1800 * 10, 20 * 500, 0.07 * 10000],
+                backgroundColor: ['orange', 'red', 'yellow', 'pink']
             }]
         }
     });
 
+
 </script>
-<script src="/js/main.js"></script>
+{{!-- <script src="/js/main.js"></script>  --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</html>

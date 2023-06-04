@@ -1,3 +1,5 @@
+const handlebars = require('handlebars');
+
 const formatPrice = (price) => {
     return parseFloat(price).toFixed(2);
 };
@@ -23,9 +25,19 @@ const formatPriceChange = (priceChange) => {
     }
 };
 
+
+handlebars.registerHelper('large-number', (number) => {
+    const suffixes = ["", "k", "mil", "bil", "tril"]; // Add more suffixes as needed
+    const suffixIndex = Math.floor(Math.log10(Math.abs(number)) / 3);
+    const scaledNumber = number / Math.pow(1000, suffixIndex);
+    const roundedNumber = Math.round(scaledNumber * 10) / 10;
+    return roundedNumber + " " + suffixes[suffixIndex];
+});
+
 module.exports = {
     formatPrice,
     formatDate,
     calculatePortfolioValue,
-    formatPriceChange
+    formatPriceChange,
+    handlebars
 };

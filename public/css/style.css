@@ -5,7 +5,7 @@ body{
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-smoothing: antialiased;
+  /* font-smoothing: antialiased; */
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
   font-size: 15px;
@@ -87,7 +87,7 @@ a.btn:hover{
     margin: 3px;
 }
 main{
-  padding:: 20px;
+  padding: 20px;
   
 }
 
