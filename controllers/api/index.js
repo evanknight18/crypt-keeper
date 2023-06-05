@@ -6,7 +6,7 @@ const portfolioRoutes = require('./portfolioRoutes');
 const coinRoutes = require('./coinRoutes');
 
 // Set up routes
-router.use('/users', userRoutes);
+router.use('/user', userRoutes);
 router.use('/portfolio', portfolioRoutes);
 router.use('/coin', coinRoutes);
 

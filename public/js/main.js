@@ -61,12 +61,30 @@ async function handleRefreshClick() {
     }
 }
 
+// refresh coin prices on dropdown click
+const handleBuyRefresh = async (event) => {
+    event.preventDefault();
+   try {
+        console.log('clicky click')
+        const response = await fetch('/api/coin/price', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    })
+    
+    if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+    }
+    } catch (error) {
+      alert(error);
+   }
+}
+
 // logout (needs work)
 const handleLogout = async (event) => {
     event.preventDefault();
    
-    console.log('clicky click')
-    const response = await fetch('/api/users/logout', {
+    const response = await fetch('/api/user/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     })
@@ -78,13 +96,13 @@ const handleLogout = async (event) => {
 }
 
 // Define buttons
-const buyButton = document.querySelector('.btn-success');
+const buyButton = document.querySelector('#buy');
 const sellButton = document.querySelector('.btn-danger');
-// const refreshButton = document.querySelector('.btn-info');
+const buyRefreshButton = document.querySelector('#buy-refresh');
 const logoutButton = document.getElementById('logout');
 // Add event listeners to the buttons
 buyButton.addEventListener('click', handleBuyClick);
 sellButton.addEventListener('click', handleSellClick);
-// refreshButton.addEventListener('click', handleRefreshClick);
+buyRefreshButton.addEventListener('click', handleBuyRefresh);
 logoutButton.addEventListener('click', handleLogout);
 

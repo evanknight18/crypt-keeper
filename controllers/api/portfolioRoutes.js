@@ -21,7 +21,7 @@ router.get('/:id', withAuth, async (req, res) => {
 router.post('/:id/coin', withAuth, async (req, res) => {
   try {
     const portfolio = await Portfolio.findAll({
-      where: { user_id: req.params.id },
+      where: { user_id: req.session.user_id },
       include: [{ model: User }, { model: Coin }]
     });
     const newCoin = { coin_name: req.body.coin_name, price: req.body.price };

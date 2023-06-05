@@ -1,0 +1,11 @@
+@media screen and (max-width: 1400px) {
+    #col1 {
+        width: 33vw;
+    }
+    #col2 {
+        width: 100vw;
+    }
+    #col3 {
+        width: 0vw
+    }
+}

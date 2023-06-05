@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <button type="button" class="btn btn-outline-warning">Logout</button>
+            <button type="button" class="btn btn-outline-warning" id="logout">Logout</button>
           </li>
         </ul>
       </div>
@@ -17,29 +17,28 @@
   <main>
 
   <div class="container-fluid text-center">
-  <div class="row align-items-start">
+  <div class="row d-flex">
 
-    <div class="col-3">
-        <h3 class="mb-5 mt-3">[NAME] Portfolio</h3>
+    <div class="d-flex flex-column col-xl-3 col-lg-6 col-sm-12 align-items-center"id="col1">
+        <h3 class="mb-5 mt-3" style="text-transform: capitalize;">{{user.user_name}} Portfolio</h3>
         <div class="mb-5 mx-4" style="height: 400px; width: 400px;">
           <canvas id="chart" style="height: 400px; width: 400px;"></canvas>
         </div>
         <div class="d-grid gap-3 mt-5">
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success dropdown-toggle" style="opacity: 0.8" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-success dropdown-toggle" id="buy-refresh" style="opacity: 0.8" data-bs-toggle="dropdown" aria-expanded="false">
               Buy
             </button>
-
             <ul class="dropdown-menu" id="buy-drop "style="width: 300px;">
                 <div class="input-group mb-3">
-                  <button class="btn btn-outline-success" type="button">Buy</button>
-                  <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                  <button class="btn btn-outline-success" id="buy" type="button">Buy</button>
+                  <select class="form-select" id="buy-options" aria-label="Example select with button addon">
                   <option selected>Pick a coin...</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  {{#each coinPriceArr}}
+                  <option value=`{{{this}}}`>{{{this}}} | ${{{this}}}</option>
+                  {{/each}}
                 </select>
-              </div>
+                </div>
               <div class="input-group mb-3" style="width: 150px;">
                 <span class="input-group-text" id="inputGroup-sizing-default">Qty</span>
                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
@@ -54,11 +53,11 @@
             <ul class="dropdown-menu" style="width: 300px;">
               <div class="input-group mb-3">
                   <button class="btn btn-outline-danger" type="button">Sell</button>
-                  <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                  <select class="form-select" id="sell-options" aria-label="Example select with button addon">
                   <option selected>Pick a coin...</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  {{#each dataArr as |coin|}}
+                  <option value="{{coin.[0]}}">{{coin.[0]}}</option>
+                  {{/each}}
                 </select>
               </div>            
             </ul>
@@ -67,9 +66,9 @@
           </div>
     </div>
 
-    <div class="col-6">
-      <h3 class="mb-5 mt-3">Market Dashboard</h3>
-      <ul class="list-group list-group-horizontal justify-content-center mb-3">
+    <div class="d-flex flex-column col-xl-6 col-lg-6 col-sm-12 align-items-center" id="col2">
+      <h3 class="mb-5 mt-3 w-100">Market Dashboard</h3>
+      <ul class="list-group list-group-horizontal justify-content-center mb-3 w-100">
         <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">COIN</li>
         <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">SYMBOL</li>
         <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">PRICE</li>
@@ -77,7 +76,7 @@
         <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">24H VOL</li>
       </ul>
       {{#each dataArr as |coin|}}
-      <ul class="list-group list-group-horizontal-sm justify-content-center mb-3">
+      <ul class="list-group list-group-horizontal-sm justify-content-center mb-3 w-100">
         <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
         <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
         <li class="list-group-item flex-fill" style="width: 200px;">${{coin.[1].usd}}</li>
@@ -87,7 +86,7 @@
       {{/each}}
     </div>
 
-    <div class="col-3">
+    <div class="d-flex flex-column col-xl-3 col-lg-12 col-sm-12 align-items-center" id="col3">
       <h3 class="mb-5 mt-3 mb-5">Performance</h3>
       <div style="height: 400px; width: 400px;">
         <img src="/images/linechart.png" style="height: 400px; width: 400px; opacity: 0.7">
@@ -120,18 +119,17 @@
     let portfolioChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-        labels: ['bitcoin', 'ethereum', 'solana', 'dogecoin'],
+        labels: [{{#each coinArr}} `{{this}}`, {{/each}}],
             datasets: [{
                 label: 'Value USD:',
-                data: [27000, 1800 * 10, 20 * 500, 0.07 * 10000],
-                backgroundColor: ['orange', 'red', 'yellow', 'pink']
+                data: [{{#each dataArr}} {{this.[1].usd}}, {{/each}}],
+                backgroundColor: ['orange', 'red', 'yellow', 'pink'],
             }]
         }
     });
 
 
 </script>
-{{!-- <script src="/js/main.js"></script>  --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+<script src="/js/main.js"></script> 
 </body>
 </html>

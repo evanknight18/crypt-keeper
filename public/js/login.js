@@ -9,7 +9,7 @@ const loginFormHandler = async (event) => {
     console.log(emailLogin + ' ' + passwordLogin)
 
     if (emailLogin && passwordLogin) {
-      const response = await fetch('/api/users/login', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         body: JSON.stringify({
             email: emailLogin,
@@ -17,10 +17,10 @@ const loginFormHandler = async (event) => {
         }),
         headers: { 'Content-Type': 'application/json' },
       });
-
+      const data = await response.json();
+      console.log(data);
       if (response.ok) {
         document.location.replace('/');
-        console.log('its okay')
       } else {
         alert('Failed to log in.');
       }
@@ -35,7 +35,7 @@ const signupFormHandler = async (event) => {
     const username = document.getElementById('username').value.trim();
 
     if (username && emailSignup && passwordSignup) {
-      const response = await fetch('/api/users', {
+      const response = await fetch('/api/user', {
         method: 'POST',
         body: JSON.stringify({
             user_name: username,
