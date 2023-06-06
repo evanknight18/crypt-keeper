@@ -16,7 +16,7 @@ Coin.init(
            allowNull: false
         },
         price: {
-            type: DataTypes.DECIMAL(5, 4),
+            type: DataTypes.DECIMAL,
             allowNull: false,
             validate: {
                 isDecimal: true

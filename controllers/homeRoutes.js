@@ -4,28 +4,8 @@ const { Configuration, OpenAIApi } = require("openai");
 const coins = require('../seeds/coin.json');
 require('dotenv').config();
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
-
 router.get('/', async (req, res) => {
   try {
-    // GPT is very slow, but works - comment out for speed
-    // let coins = ['bitcoin', 'ethereum'];
-    // const gpt = await openai.createCompletion({
-    //     model: "text-davinci-003",
-    //     prompt: `My cryptocurrency portfolio holds ${coins}. As of the year 2023, give me predictions for the coins in my portfolio and recent news for each coin. Finally, suggest one cryptocurrency that is worth researching more about. Please format your response in neat html, using <h3> for the headers of each section, breaks after each section, and with no html head.`,
-    //     temperature: 1.2,
-    //     max_tokens: 2048,
-    //     // top_p: 1.0,
-    //     n: 1,
-    //     frequency_penalty: 0.0,
-    //     presence_penalty: 0.0,
-    //     stop: ["\"\"\""],
-    // });
-    // const resGPT = gpt.data.choices[0].text;
 
     const portfolioData = await Portfolio.findAll({
       where: { user_id: req.session.user_id },
@@ -34,7 +14,7 @@ router.get('/', async (req, res) => {
         { model: Coin }
       ],
     });
-    
+    console.log(portfolioData);
     const portfolioCoinData = await PortfolioCoin.findAll({
         where: { portfolio_id: req.session.user_id }
     });
@@ -43,8 +23,6 @@ router.get('/', async (req, res) => {
     let quantities = [];
     portfolioCoin.forEach(coin => quantities.push(coin.quantity));
     // console.log(quantities);
-
-
 
     const portfolio = portfolioData.map((portfolio) => portfolio.get({ plain: true }));
     let portCoins = [];

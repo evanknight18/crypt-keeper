@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
     try {
         // Try to find the user with the given email address
         const userData = await User.findOne({ where: { email: req.body.email } });
-
+        
         if (!userData) {
             res
                 .status(400)
@@ -65,7 +65,6 @@ router.post('/login', async (req, res) => {
             res.status(200).json({ user: userData.user_name, message: 'You are now logged in!' });
             })
         }
-        // If the email and password are valid, create a new session
 
     } catch (err) {
         res.status(500).json(err);
