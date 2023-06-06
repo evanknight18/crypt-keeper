@@ -1,14 +1,14 @@
 const axios = require('axios');
 const router = require('express').Router();
-const { Portfolio, User, Coin } = require('../../models');
+const { Portfolio, User, Coin, PortfolioCoin } = require('../../models');
 const withAuth = require('../../utils/auth');
 const { where } = require('sequelize');
 
 // Get user's portfolio with associted coins
-router.get('/:id', withAuth, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const portfolioData = await Portfolio.findAll({
-      where: { user_id: req.params.id },
+      where: { user_id: req.session.user_id },
       include: [{ model: User }, { model: Coin }]
     });
     res.status(200).json(portfolioData);
@@ -18,21 +18,40 @@ router.get('/:id', withAuth, async (req, res) => {
 });
 
 // Add a coin to user's portfolio
-router.post('/:id/coin', withAuth, async (req, res) => {
+router.post('/coin', withAuth, async (req, res) => {
   try {
     const portfolio = await Portfolio.findAll({
       where: { user_id: req.session.user_id },
       include: [{ model: User }, { model: Coin }]
     });
-    const newCoin = { coin_name: req.body.coin_name, price: req.body.price };
+
+    const coin = await Coin.findOne({
+      where: { coin_name: req.body.coin_name }
+    });
+
+    const newCoin = { 
+      coin_name: req.body.coin_name,
+      price: coin.price,
+      quantity: req.body.quantity
+    };
+
+    console.log(newCoin);
+
     let exists = portfolio[0].coins.filter(coin => coin.coin_name === newCoin.coin_name);
     const addCoin = exists;
     console.log(addCoin);
+
+    await PortfolioCoin.create({
+      quantity: newCoin.quantity,
+      coin_id: coin.coin_id,
+      portfolio_id: portfolio[0].id
+    })
 
     if (addCoin.coin_name === newCoin.coin_name) {
       res.json({message: `Coin ${newCoin.coin_name} already exists` });
     } else {
       await portfolio[0].createCoin(newCoin);
+
       res.status(200).json({message: `Coin ${newCoin.coin_name} added successfully!` });
     }
   } catch (err) {
@@ -41,10 +60,10 @@ router.post('/:id/coin', withAuth, async (req, res) => {
 });
 
 // Delete a coin from user's portfolio
-router.delete('/:id/coin', withAuth, async (req, res) => {
+router.delete('/coin', withAuth, async (req, res) => {
   try {
     const portfolio = await Portfolio.findAll({
-      where: { user_id: req.params.id },
+      where: { user_id: req.session.user_id },
       include: [{ model: User }, { model: Coin }]
     });
 
@@ -67,12 +86,12 @@ router.delete('/:id/coin', withAuth, async (req, res) => {
 // Sell a coin from user's portfolio
 router.post('/:id/sell', withAuth, async (req, res) => {
   try {
-    const { coinId, quantity } = req.body;
+    const { coin_name, quantity } = req.body;
     const portfolio = await Portfolio.findOne({ where: { user_id: req.params.id } });
     if (!portfolio) {
       return res.status(404).json({ error: 'Portfolio not found' });
     }
-    const coinIndex = portfolio.coins.findIndex(c => c.coinId === coinId);
+    const coinIndex = portfolio.coins.findIndex(c => c.coin_name === coin_name);
     if (coinIndex === -1) {
       return res.status(404).json({ error: 'Coin not found in portfolio' });
     }

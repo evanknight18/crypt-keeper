@@ -34,6 +34,18 @@ handlebars.registerHelper('large-number', (number) => {
     return roundedNumber + " " + suffixes[suffixIndex];
 });
 
+handlebars.registerHelper('mult-sum', (array1, array2) => {
+    let mults = [];
+    for (let i = 0; i < array1.length; i++) {
+        mults.push(array1[i] * array2[i])     
+    }
+    const initial = 0;
+    const sum = mults.reduce(
+        (accumulator, currentValue) => accumulator + currentValue, initial
+    )
+    return sum;
+})
+
 module.exports = {
     formatPrice,
     formatDate,

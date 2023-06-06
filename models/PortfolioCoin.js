@@ -14,8 +14,9 @@ PortfolioCoin.init(
             autoIncrement: true
         },
         quantity: {
-            type: DataTypes.INTEGER,
-            allowNull: true
+            type: DataTypes.DECIMAL(5, 4),
+            defaultValue: 10,
+            allowNull: false,
         },
         coin_id: {
            type: DataTypes.INTEGER,

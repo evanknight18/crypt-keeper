@@ -16,54 +16,37 @@
 
   <main>
 
-  <div class="container-fluid text-center">
+  <div class="container-fluid text-center" style="background: linear-gradient(to left, #232526, #414345);">
   <div class="row d-flex">
 
-    <div class="d-flex flex-column col-xl-3 col-lg-6 col-sm-12 align-items-center"id="col1">
+    <div class="d-flex flex-column col-xl-3 col-lg-6 col-sm-12 align-items-center" style="height: 100vh;" id="col1">
         <h3 class="mb-5 mt-3" style="text-transform: capitalize;">{{user.user_name}} Portfolio</h3>
         <div class="mb-5 mx-4" style="height: 400px; width: 400px;">
           <canvas id="chart" style="height: 400px; width: 400px;"></canvas>
         </div>
+        <h5 style="color: gold; padding: 10px; border: 5px solid; border-color: gold; border-radius: 20px;">Portfolio Value: ${{mult-sum quantities prices}}</h5>
         <div class="d-grid gap-3 mt-5">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success dropdown-toggle" id="buy-refresh" style="opacity: 0.8" data-bs-toggle="dropdown" aria-expanded="false">
-              Buy
-            </button>
-            <ul class="dropdown-menu" id="buy-drop "style="width: 300px;">
-                <div class="input-group mb-3">
-                  <button class="btn btn-outline-success" id="buy" type="button">Buy</button>
-                  <select class="form-select" id="buy-options" aria-label="Example select with button addon">
-                  <option selected>Pick a coin...</option>
-                  {{#each coinPriceArr}}
-                  <option value=`{{{this}}}`>{{{this}}} | ${{{this}}}</option>
-                  {{/each}}
-                </select>
-                </div>
-              <div class="input-group mb-3" style="width: 150px;">
-                <span class="input-group-text" id="inputGroup-sizing-default">Qty</span>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-              </div>
-            </ul>
-            </div>
 
-           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-danger dropdown-toggle" style="opacity: 0.8" data-bs-toggle="dropdown" aria-expanded="false">
-              Sell
-            </button>
-            <ul class="dropdown-menu" style="width: 300px;">
-              <div class="input-group mb-3">
-                  <button class="btn btn-outline-danger" type="button">Sell</button>
-                  <select class="form-select" id="sell-options" aria-label="Example select with button addon">
-                  <option selected>Pick a coin...</option>
-                  {{#each dataArr as |coin|}}
-                  <option value="{{coin.[0]}}">{{coin.[0]}}</option>
-                  {{/each}}
-                </select>
-              </div>            
-            </ul>
-          </div>
-            <button class="btn btn-light" type="button" style="opacity: 0.6;"><i class="bi bi-arrow-repeat mx-2"></i>Refresh</button>
-          </div>
+            {{> buy}}  
+
+        <div class="btn-group" role="group">
+        <button type="button" class="btn btn-danger dropdown-toggle" style="opacity: 0.8" data-bs-toggle="dropdown" aria-expanded="false">
+            Sell
+        </button>
+        <ul class="dropdown-menu" style="width: 300px;">
+            <div class="input-group mb-3">
+                <button class="btn btn-outline-danger" id="sell" type="button">Sell</button>
+                <select class="form-select" id="sell-options" aria-label="Example select with button addon">
+                <option selected>Pick a coin...</option>
+                {{#each dataArr as |coin|}}
+                <option id="sell-{{coin.[0]}}" value="{{coin.[0]}}">{{coin.[0]}}</option>
+                {{/each}}
+            </select>
+            </div>            
+        </ul>
+        </div>
+            <button class="btn btn-light" id="refresh" type="button" style="opacity: 0.6;"><i class="bi bi-arrow-repeat mx-2"></i>Refresh</button>
+        </div>
     </div>
 
     <div class="d-flex flex-column col-xl-6 col-lg-6 col-sm-12 align-items-center" id="col2">
@@ -76,7 +59,7 @@
         <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">24H VOL</li>
       </ul>
       {{#each dataArr as |coin|}}
-      <ul class="list-group list-group-horizontal-sm justify-content-center mb-3 w-100">
+      <ul class="list-group list-group-horizontal-sm justify-content-center align-items-center mb-3 w-100">
         <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
         <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
         <li class="list-group-item flex-fill" style="width: 200px;">${{coin.[1].usd}}</li>
@@ -86,30 +69,13 @@
       {{/each}}
     </div>
 
-    <div class="d-flex flex-column col-xl-3 col-lg-12 col-sm-12 align-items-center" id="col3">
-      <h3 class="mb-5 mt-3 mb-5">Performance</h3>
-      <div style="height: 400px; width: 400px;">
-        <img src="/images/linechart.png" style="height: 400px; width: 400px; opacity: 0.7">
-      </div>
-      <div class="d-grid gap-2 mt-5">
-         <button class="btn btn-light btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="opacity: 0.6" type="button">portfolioGPT</button>
-      </div>
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-        <h1 class="offcanvas-title" id="offcanvasRightLabel">portfolioGPT say:</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-        <div class="offcanvas-body">
-        ...
-        </div>
-    </div>
+        {{> GPT}}
       
     </div>
-
   </div>
   </div>
 
-  </main>
+</main>
 
 
 <script>
@@ -122,13 +88,12 @@
         labels: [{{#each coinArr}} `{{this}}`, {{/each}}],
             datasets: [{
                 label: 'Value USD:',
-                data: [{{#each dataArr}} {{this.[1].usd}}, {{/each}}],
-                backgroundColor: ['orange', 'red', 'yellow', 'pink'],
+                data: [40, 30, 20, 10],
+                backgroundColor: [ '#f8b400', '#faf5e4', '#2c786c', '#004445'],
             }]
         }
     });
-
-
+{{!-- {{#each dataArr}} {{this.[1].usd}}, {{/each}} --}}
 </script>
 <script src="/js/main.js"></script> 
 </body>

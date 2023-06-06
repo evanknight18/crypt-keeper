@@ -2,9 +2,10 @@ const router = require('express').Router();
 const axios = require('axios');
 const withAuth = require('../../utils/auth');
 const coins = require('../../seeds/coin.json');
+const { Coin } = require('../../models');
 
 //Get all coin prices (render not working)
-router.get('/price', withAuth, async (req, res) => {
+router.put('/price', withAuth, async (req, res) => {
   try {
     const coinsArray = [];
 
@@ -14,7 +15,7 @@ router.get('/price', withAuth, async (req, res) => {
 
     const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${coinsArray.join('%2C')}&vs_currencies=usd`, {
       params: {
-        _limit: 10,
+        _limit: 1,
       },
     });
 
@@ -22,13 +23,46 @@ router.get('/price', withAuth, async (req, res) => {
     const coinPriceArr = [];
     
     for (const price in priceObj) {
-      coinPriceArr.push(priceObj[price].usd)
+      coinPriceArr.push([price, priceObj[price].usd])
     }
-    console.log(coinsArray + ' ' + coinPriceArr);
+    console.log(coinPriceArr);
+    
     if (coinPriceArr) {
-      res.render('dashboard', {
-        ...coinPriceArr
-      });
+    
+    const coinData = await Coin.findAll()
+    const plainCoinData = coinData.map(coin => coin.get({ plain: true }))
+    console.log(plainCoinData);
+      // await Coin.bulkCreate([
+      //   {coin_name: `${coinPriceArr[0][0]}`, price: coinPriceArr[0][1]},
+      //   {coin_name: `${coinPriceArr[1][0]}`, price: coinPriceArr[1][1]},
+      //   {coin_name: `${coinPriceArr[2][0]}`, price: coinPriceArr[2][1]},
+      //   {coin_name: `${coinPriceArr[3][0]}`, price: coinPriceArr[3][1]},
+      //   {coin_name: `${coinPriceArr[4][0]}`, price: coinPriceArr[4][1]},
+      //   {coin_name: `${coinPriceArr[5][0]}`, price: coinPriceArr[5][1]},
+      //   {coin_name: `${coinPriceArr[6][0]}`, price: coinPriceArr[6][1]},
+      //   {coin_name: `${coinPriceArr[7][0]}`, price: coinPriceArr[7][1]}],
+      //   // {coin_name: `${coinPriceArr[8][0]}`, price: coinPriceArr[8][1]},
+      //   // {coin_name: `${coinPriceArr[9][0]}`, price: coinPriceArr[9][1]}],
+      //   {validate: true}
+      // );
+
+      // await plainCoinData.update({ price: coinPriceArr[0][1] }, { where: { coin_name: 'bitcoin' }
+      // });  
+      await Coin.update(
+        { price: coinPriceArr[0][1] }, { where: { coin_name: 'bitcoin' }},
+        { price: coinPriceArr[1][1] }, { where: { coin_name: 'cardano' }},
+        { price: coinPriceArr[2][1] }, { where: { coin_name: 'dogecoin' }},
+        { price: coinPriceArr[3][1] }, { where: { coin_name: 'ethereum' }},
+        { price: coinPriceArr[4][1] }, { where: { coin_name: 'polkadot' }},
+        { price: coinPriceArr[5][1] }, { where: { coin_name: 'ripple' }},
+        { price: coinPriceArr[6][1] }, { where: { coin_name: 'solana' }},
+        { price: coinPriceArr[7][1] }, { where: { coin_name: 'tron' }},
+        ); 
+      
+      await Coin.findAll();
+      const newData = coinData.map(coin => coin.get({ plain: true }))
+      res.status(200).json(newData);
+
     } else {
       res.status(404).json({ message: 'Coins not found' });
     }

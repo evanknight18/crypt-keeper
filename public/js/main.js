@@ -12,56 +12,71 @@ async function handleApiCall(url) {
 }
 
 
-// Buy button
+// Buy button -- in progress
 async function handleBuyClick() {
-    const coinId = 'bitcoin'; // Replace this with the actual coin ID
-    const quantity = 1; // Replace this with the actual quantity
-    const response = await fetch('/api/portfolio/:id/coin', {
+    try {
+
+        const coinId = document.querySelector('#buycoin').value;
+        const quantity = document.querySelector('#quantity').value;
+
+        const response = await fetch('/api/portfolio/coin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ coinId, quantity }),
+        body: JSON.stringify({ 
+            coin_name: coinId, 
+            quantity: quantity 
+        }),
     });
-    if (response.ok) {
-        const updatedPortfolio = await response.json();
-        updatePortfolio(updatedPortfolio);
-    } else {
-        console.error('Failed to buy coin');
+
+    console.log(`bought ${coinId}`)
+
+    } catch (error) {
+        alert(error);
     }
+};
+
+// Sell button -- working
+const handleSellClick = async (event) => {
+    event.preventDefault();
+    try {
+        const id = 1;
+        const coin = document.querySelector('[id^="sell-"]').value
+            console.log(`${coin}`);
+        const response = await fetch(`/api/portfolio/coin`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coin_name: coin })
+      });
+       
+      console.log('coin sold');
+
+    } catch (error) {
+        alert(error);
+    }
+};
+
+// Refresh button -- in progress
+async function handleRefreshClick(event) {
+    event.preventDefault();
+    location.reload()
+    //    try {
+//         console.log('clicky click')
+//         const response = await fetch('/api/portfolio/:id', {
+//         method: 'GET',
+//         headers: { 'Content-Type': 'application/json' },
+//     })
+//     if (response.ok) {
+//         const data = await response.json();
+//         console.log(data);
+//     }
+//     } catch (error) {
+//       alert(error);
+//    }
 }
 
-// Sell button
-async function handleSellClick() {
-    const coinId = 'bitcoin'; // Replace this with the actual coin ID
-    const quantity = 1; // Replace this with the actual quantity
-    const response = await fetch('/api/portfolio/sell', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ coinId, quantity }),
-    });
-    if (response.ok) {
-        const updatedPortfolio = await response.json();
-        updatePortfolio(updatedPortfolio);
-    } else {
-        console.error('Failed to sell coin');
-    }
-}
-
-// Refresh button
-async function handleRefreshClick() {
-    const response = await fetch('/api/portfolio/refresh');
-    if (response.ok) {
-        const updatedPortfolio = await response.json();
-        updatePortfolio(updatedPortfolio);
-    } else {
-        console.error('Failed to refresh portfolio');
-    }
-}
-
-// refresh coin prices on dropdown click
+// refresh coin prices on dropdown click -- in progress (not rendering)
 const handleBuyRefresh = async (event) => {
     event.preventDefault();
    try {
@@ -80,7 +95,7 @@ const handleBuyRefresh = async (event) => {
    }
 }
 
-// logout (needs work)
+// logout -- working
 const handleLogout = async (event) => {
     event.preventDefault();
    
@@ -97,12 +112,16 @@ const handleLogout = async (event) => {
 
 // Define buttons
 const buyButton = document.querySelector('#buy');
-const sellButton = document.querySelector('.btn-danger');
-const buyRefreshButton = document.querySelector('#buy-refresh');
+const sellButton = document.querySelector('#sell');
+const refreshButton = document.querySelector('#refresh');
+const buyRefreshButton = document.querySelector('#buyRefresh');
 const logoutButton = document.getElementById('logout');
+const gptButton = document.getElementById('gpt');
 // Add event listeners to the buttons
 buyButton.addEventListener('click', handleBuyClick);
 sellButton.addEventListener('click', handleSellClick);
+refreshButton.addEventListener('click', handleRefreshClick);
 buyRefreshButton.addEventListener('click', handleBuyRefresh);
 logoutButton.addEventListener('click', handleLogout);
+gptButton.addEventListener('click', handleBuyRefresh);
 
