@@ -128,7 +128,11 @@ const handleGPT = async (event) => {
     })
     if (response.ok) {
         const gpt = await response.json();
-        const gptEl = document.createElement('div')
+        const spinner = document.querySelector('#spinner');
+        const gptEl = document.createElement('div');
+        if(gptEl) {
+            spinner.style.display = 'none';
+        }
         gptEl.innerHTML = gpt;
         gptBody.appendChild(gptEl);
       } else {
