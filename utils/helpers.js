@@ -43,7 +43,16 @@ handlebars.registerHelper('mult-sum', (array1, array2) => {
     const sum = mults.reduce(
         (accumulator, currentValue) => accumulator + currentValue, initial
     )
-    return sum;
+    const round = (Math.round(sum * 100) / 100).toFixed(2)
+    return round.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+})
+
+handlebars.registerHelper('mult-array', (array1, array2) => {
+    let mults = [];
+    for (let i = 0; i < array1.length; i++) {
+        mults.push(array1[i] * array2[i])     
+    }
+    return mults;
 })
 
 module.exports = {

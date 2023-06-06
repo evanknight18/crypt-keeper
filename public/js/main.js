@@ -12,7 +12,7 @@ async function handleApiCall(url) {
 }
 
 
-// Buy button -- in progress
+// Buy button -- working
 async function handleBuyClick() {
     try {
 
@@ -61,6 +61,15 @@ const handleSellClick = async (event) => {
 async function handleRefreshClick(event) {
     event.preventDefault();
     location.reload()
+    //save new portfolio value
+    try {
+        const refreshValue = document.querySelector('#port-value').value;
+        console.log(refreshValue);
+    } catch (error) {
+        
+    }
+    
+
     //    try {
 //         console.log('clicky click')
 //         const response = await fetch('/api/portfolio/:id', {
@@ -110,6 +119,23 @@ const handleLogout = async (event) => {
       }
 }
 
+const handleGPT = async (event) => {
+    event.preventDefault();
+    const gptBody = document.querySelector('#gpt-body')
+    const response = await fetch('/api/portfolio/1/gpt', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    })
+    if (response.ok) {
+        const gpt = await response.json();
+        const gptEl = document.createElement('div')
+        gptEl.innerHTML = gpt;
+        gptBody.appendChild(gptEl);
+      } else {
+        alert(response.statusText);
+      }
+}
+
 // Define buttons
 const buyButton = document.querySelector('#buy');
 const sellButton = document.querySelector('#sell');
@@ -123,5 +149,5 @@ sellButton.addEventListener('click', handleSellClick);
 refreshButton.addEventListener('click', handleRefreshClick);
 buyRefreshButton.addEventListener('click', handleBuyRefresh);
 logoutButton.addEventListener('click', handleLogout);
-gptButton.addEventListener('click', handleBuyRefresh);
+gptButton.addEventListener('click', handleGPT);
 

@@ -19,12 +19,12 @@
   <div class="container-fluid text-center" style="background: linear-gradient(to left, #232526, #414345);">
   <div class="row d-flex">
 
-    <div class="d-flex flex-column col-xl-3 col-lg-6 col-sm-12 align-items-center" style="height: 100vh;" id="col1">
-        <h3 class="mb-5 mt-3" style="text-transform: capitalize;">{{user.user_name}} Portfolio</h3>
+    <div class="d-flex flex-column col-xl-3 col-lg-6 col-sm-12 align-items-center bg-secondary" style="height: 100vh;" id="col1">
+        <h3 class="mb-5 mt-3 text-light" style="text-transform: capitalize;">{{user.user_name}} Portfolio</h3>
         <div class="mb-5 mx-4" style="height: 400px; width: 400px;">
           <canvas id="chart" style="height: 400px; width: 400px;"></canvas>
         </div>
-        <h5 style="color: gold; padding: 10px; border: 5px solid; border-color: gold; border-radius: 20px;">Portfolio Value: ${{mult-sum  prices quantities}}</h5>
+        <h5 id="port-value" style="color: white; padding: 10px; border: 5px solid; border-color: white; border-radius: 20px;" value="{{mult-sum  prices quantities}}">Portfolio Value: ${{mult-sum  prices quantities}}</h5>
         <div class="d-grid gap-3 mt-5">
 
             {{> buy}}  
@@ -52,15 +52,15 @@
     <div class="d-flex flex-column col-xl-6 col-lg-6 col-sm-12 align-items-center" id="col2">
       <h3 class="mb-5 mt-3 w-100">Market Dashboard</h3>
       <ul class="list-group list-group-horizontal justify-content-center mb-3 w-100">
-        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">COIN</li>
-        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">SYMBOL</li>
-        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">PRICE</li>
-        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">MARKET CAP</li>
-        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6">24H VOL</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6; width: 200px;"><i class="bi bi-coin"></i></li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6; width: 200px;">COIN</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6; width: 200px;">PRICE</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6; width: 200px;">MARKET CAP</li>
+        <li class="list-group-item bg-light text-dark flex-fill" style="opacity: 0.6; width: 200px;">24H VOL</li>
       </ul>
       {{#each dataArr as |coin|}}
       <ul class="list-group list-group-horizontal-sm justify-content-center align-items-center mb-3 w-100">
-        <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
+        <li class="list-group-item flex-fill bg-light" style="width: 200px;"><img style="height: 30px; width: 30px;"src="/images/{{coin.[0]}}.png"</li>
         <li class="list-group-item flex-fill" style="width: 200px;">{{coin.[0]}}</li>
         <li class="list-group-item flex-fill" style="width: 200px;">${{coin.[1].usd}}</li>
         <li class="list-group-item flex-fill" style="width: 200px;">${{large-number coin.[1].usd_market_cap}}</li>
@@ -80,15 +80,15 @@
 
 <script>
     const ctx = document.getElementById('chart');
-    Chart.defaults.global.defaultFontColor = "#fff"
+    Chart.defaults.global.defaultFontColor = "white"
 
     let portfolioChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
         labels: [{{#each coinArr}} `{{this}}`, {{/each}}],
             datasets: [{
-                label: 'Value USD:',
-                data: [40, 30, 20, 10],
+                label: 'Value $:',
+                data: [{{mult-array prices quantities}}],
                 backgroundColor: [ '#f8b400', '#faf5e4', '#2c786c', '#004445'],
             }]
         }

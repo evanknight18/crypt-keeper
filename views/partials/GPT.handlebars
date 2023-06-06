@@ -3,6 +3,9 @@
       <div style="height: 400px; width: 400px;">
         <img src="/images/linechart.png" style="height: 400px; width: 400px; opacity: 0.7">
       </div>
+      {{!-- <hr style="color: white; height: 2px;"> --}}
+      <p>-------------------------------------------------</p>
+      <p>Portfolio Value Over Time</p>
       <div class="d-grid gap-2 mt-5">
          <button class="btn btn-light btn-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" style="opacity: 0.6" id="gpt" type="button">portfolioGPT</button>
       </div>
@@ -11,13 +14,9 @@
         <h1 class="offcanvas-title" id="offcanvasRightLabel">portfolioGPT say:</h1>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-        <div class="offcanvas-body">
-        {{{resGPT}}}
-                <div>
-                
-                {{#each coinPriceArr as |coin|}}
-                <h1 id="buy-{{coin.[0]}}" value=`{{coin.[0]}}`>{{coin.[0]}} | ${{coin.[1]}}</h1>
-                {{/each}}
-                </div>
+        <div class="offcanvas-body d-flex align-items-center justify-content-center" id="gpt-body">
+        <div class="spinner-grow text-warning" role="status" style="height: 100px; width: 100px;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
         </div>
     </div>

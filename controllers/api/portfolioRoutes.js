@@ -96,17 +96,19 @@ router.delete('/coin', withAuth, async (req, res) => {
   }
 });
 
-router.get('/gpt', withAuth, async (req, res) => {
+router.get('/:id/gpt', withAuth, async (req, res) => {
   try {
-    const portfolio = await Portfolio.findAll({
+    const portfolioData = await Portfolio.findAll({
       where: { user_id: req.session.user_id },
       include: [{ model: User }, { model: Coin }]
     })
-
-    let coins = portfolio[0].map(coin => coin.coin_name);
     
-    console.log(coins);
-    // let coins = ['bitcoin', 'ethereum'];
+    
+    const portfolio = portfolioData[0].coins.map(coin => coin.get({ plain: true }));
+    let coins = [];
+    portfolio.forEach(coin => coins.push(coin.coin_name))
+    // console.log(coins);
+
     const gpt = await openai.createCompletion({
         model: "text-davinci-003",
         prompt: `My cryptocurrency portfolio holds ${coins}. As of the year 2023, give me predictions for the coins in my portfolio and recent news for each coin. Finally, suggest one cryptocurrency that is worth researching more about. Please format your response in neat html, using <h3> for the headers of each section, breaks after each section, and with no html head.`,
@@ -120,11 +122,9 @@ router.get('/gpt', withAuth, async (req, res) => {
     });
     const resGPT = gpt.data.choices[0].text;
     console.log(resGPT);
-    res.render('dashboard', {
-      resGPT
-    });
+    res.status(200).json(resGPT);
   } catch (error) {
-    alert(error);   
+    console.log(error);   
   }
 })
 
