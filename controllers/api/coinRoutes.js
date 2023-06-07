@@ -4,7 +4,7 @@ const withAuth = require('../../utils/auth');
 const coins = require('../../seeds/coin.json');
 const { Coin } = require('../../models');
 
-//Get all coin prices (render not working)
+//update all coin prices (render not working)
 router.put('/price', withAuth, async (req, res) => {
   try {
     const coinsArray = [];
